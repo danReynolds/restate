@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: () {
-                _counterBloc.setValue((val) => (val ?? 0) + 1);
+                _counterBloc.add((_counterBloc.value ?? 0) + 1);
               },
               child: const Text('Increment count'),
             ),

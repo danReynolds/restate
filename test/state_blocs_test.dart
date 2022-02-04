@@ -3,6 +3,50 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:state_blocs/state_blocs.dart';
 import 'package:state_blocs/state_change_tuple.dart';
 
+class TestModel {
+  bool test;
+
+  TestModel(this.test);
+
+  TestModel copyWith({
+    required bool value,
+  }) {
+    return TestModel(value);
+  }
+}
+
+class TestModelMatcher extends Matcher {
+  TestModel expected;
+  late TestModel actual;
+  TestModelMatcher(this.expected);
+
+  @override
+  Description describe(Description description) {
+    return description.add(
+      "has expected value: ${expected.test}",
+    );
+  }
+
+  @override
+  Description describeMismatch(
+    dynamic item,
+    Description mismatchDescription,
+    Map<dynamic, dynamic> matchState,
+    bool verbose,
+  ) {
+    return mismatchDescription.add(
+      "has expected value: ${matchState['actual'].test}",
+    );
+  }
+
+  @override
+  bool matches(actual, Map matchState) {
+    final _actual = actual as TestModel;
+    this.actual = _actual;
+    return actual.test == expected.test;
+  }
+}
+
 class StateChangeTupleMatcher extends Matcher {
   StateChangeTuple expected;
   late StateChangeTuple actual;
@@ -172,10 +216,10 @@ void main() {
   });
 
   group('setValue', () {
-    late StateBloc<int> stateBloc;
+    late StateBloc<TestModel> stateBloc;
 
     setUp(() {
-      stateBloc = StateBloc();
+      stateBloc = StateBloc(TestModel(false));
     });
 
     tearDown(() {
@@ -183,18 +227,11 @@ void main() {
     });
 
     test('updates the StateBloc to the returned value', () {
-      stateBloc.setValue((_) => 1);
-      expect(stateBloc.value, 1);
+      stateBloc.setValue((currentVal) {
+        currentVal?.test = true;
+      });
+      expect(stateBloc.value!.test, true);
+      expectLater(stateBloc.stream, emits(TestModelMatcher(TestModel(true))));
     });
-
-    test(
-      'provides the current value as input to the update function',
-      () {
-        stateBloc.add(1);
-        expect(stateBloc.value, 1);
-        stateBloc.setValue((val) => val! + 1);
-        expect(stateBloc.value, 2);
-      },
-    );
   });
 }
