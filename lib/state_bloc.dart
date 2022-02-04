@@ -4,7 +4,7 @@ import 'package:state_blocs/state_change_tuple.dart';
 /// A state class that holds a current value that can be accessed synchronously
 /// using [value] or as a stream using [stream].
 class StateBloc<T> {
-  final _inputController = StreamController<T?>();
+  final _inputController = StreamController<StateChangeTuple<T?>>();
   final _outputController = StreamController<StateChangeTuple<T?>>.broadcast();
 
   T? _value;
@@ -16,16 +16,12 @@ class StateBloc<T> {
       if (!_hasEvent) {
         _hasEvent = true;
       }
-      _prevValue = _value;
-      _value = newValue;
-
-      _outputController.add(StateChangeTuple(_prevValue, _value));
+      _outputController.add(newValue);
     });
 
+    _hasEvent = initialValue != null;
+
     if (initialValue != null) {
-      /// We assign [initialValue] outside of [add] first so that it is synchronously
-      /// accessible.
-      _value = initialValue;
       add(initialValue);
     }
   }
@@ -34,6 +30,11 @@ class StateBloc<T> {
   dispose() {
     _inputController.close();
     _outputController.close();
+  }
+
+  _updateValue(T? value) {
+    _prevValue = _value;
+    _value = value;
   }
 
   /// Returns a stream that emits all of changes to the value of the [StateBloc]
@@ -68,13 +69,14 @@ class StateBloc<T> {
 
   /// A Future that waits for a value to be emitted to the [StateBloc]. Completes
   /// with the current value if the [StateBloc] has already had a value emitted.
-  Future<T?> get current {
+  Future<T?> get first {
     return stream.first;
   }
 
   /// Updates the current value of the [StateBloc] to the provided value.
   void add(T? value) {
-    _inputController.add(value);
+    _updateValue(value);
+    _inputController.add(StateChangeTuple(_prevValue, _value));
   }
 
   /// Sets the current value of the [StateBloc] to the returned value of the [updateFn].
