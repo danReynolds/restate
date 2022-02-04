@@ -110,18 +110,20 @@ class StateBlocStream<T> extends Stream<StateChangeTuple<T?>> {
 /// A state class that holds a current value accessible synchronously
 /// using [StateBloc.value], as a [Future] using [StateBloc.current] or as a stream using [StateBloc.stream].
 class StateBloc<T> {
-  late StateBlocStream<T?> _stream;
+  late Stream<T?> _stream;
+  late StateBlocStream<T?> _changesStream;
 
   StateBloc([T? initialValue]) {
-    _stream = StateBlocStream(initialValue);
+    _changesStream = StateBlocStream(initialValue);
+    _stream = _changesStream.map((data) => data.current);
   }
 
   Stream<T?> get stream {
-    return _stream.map((data) => data.current);
+    return _stream;
   }
 
   StateBlocStream<T?> get changes {
-    return _stream;
+    return _changesStream;
   }
 
   /// Disposes all resources held by the [StateBloc].
