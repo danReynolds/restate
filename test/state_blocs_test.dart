@@ -73,7 +73,7 @@ void main() {
     });
   });
 
-  group('first', () {
+  group('current', () {
     late StateBloc<int> stateBloc;
 
     setUp(() {
@@ -88,7 +88,7 @@ void main() {
       'returns a future that resolves immediately if a value has already been added to the StateBloc',
       () {
         stateBloc.add(1);
-        expect(stateBloc.first, completion(1));
+        expect(stateBloc.current, completion(1));
       },
     );
 
@@ -96,14 +96,14 @@ void main() {
       'returns a future that resolves immediately if the stateBloc was provided an initialValue',
       () {
         stateBloc = StateBloc(0);
-        expect(stateBloc.first, completion(0));
+        expect(stateBloc.current, completion(0));
       },
     );
 
     test(
       'returns a future that resolves once a value has been added to the StateBloc',
       () {
-        expect(stateBloc.first, completion(1));
+        expect(stateBloc.current, completion(1));
         stateBloc.add(1);
       },
     );
@@ -167,7 +167,7 @@ void main() {
 
     test('updates the StateBloc to the provided value', () {
       stateBloc.add(1);
-      expect(stateBloc.first, completion(1));
+      expect(stateBloc.value, 1);
     });
   });
 
@@ -184,7 +184,7 @@ void main() {
 
     test('updates the StateBloc to the returned value', () {
       stateBloc.setValue((_) => 1);
-      expect(stateBloc.first, completion(1));
+      expect(stateBloc.value, 1);
     });
 
     test(

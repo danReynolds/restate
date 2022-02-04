@@ -68,8 +68,8 @@ class StateBloc<T> {
   }
 
   /// A Future that waits for a value to be emitted to the [StateBloc]. Completes
-  /// with the current value if the [StateBloc] has already had a value emitted.
-  Future<T?> get first {
+  /// with the current value if the [StateBloc] already has a value.
+  Future<T?> get current {
     return stream.first;
   }
 
