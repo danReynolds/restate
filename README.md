@@ -2,7 +2,12 @@
 
 **Restate** is a reactive state management libray for Flutter applications with no dependencies and < 200 lines.
 
-Each Restate [StateBloc]() holds a single state value accessible synchronously using [StateBloc.value](), as a [Future](https://dart.dev/codelabs/async-await#what-is-a-future) using [StateBloc.current]() or as a [Stream](https://dart.dev/tutorials/language/streams) using [StateBloc.stream]() and [StateBloc.changes]() for a stream of the current and previous value.
+Each Restate [StateBloc](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc-class.html) holds a single state value accessible synchronously, as a [Future](https://dart.dev/codelabs/async-await#what-is-a-future) or as a [Stream](https://dart.dev/tutorials/language/streams) of values.
+
+* [StateBloc.value](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/value.html): Access the state value synchronously.
+* [StateBloc.current](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/current.html): A Future that resolves with the current value or waits for one if no value has been added.
+* [StateBloc.stream]: A Stream of updates to the state value.
+* [StateBloc.changes]: A Stream of changes to the state value including the current and previous value.
 
 ## Reading the current value
 
@@ -60,11 +65,12 @@ final counterState = StateBloc<int>();
 
 counterState.current.then((value) => print(value)); // 1
 counterState.add(1);
+counterState.current.then((value) => print(value)); // 1
 ```
 
 ## Accessing State in Widgets
 
-Accesing and listening for updates to your state is as simple as creating a [StateBloc]()
+Accesing and listening for updates to your state is as simple as creating a [StateBloc](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc-class.html)
 and then using a [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) to rebuild your widget when data changes:
 
 ```dart
@@ -98,12 +104,11 @@ class MyWidget extends StatelessWidget {
 }
 ```
 
-That's it! You can run the [demo]() to see a more in-depth working example.
+That's it! You can run the [demo](https://github.com/danReynolds/restate/tree/master/example) to see a more in-depth working example.
 
 ## Updating a StateBloc value
 
-Generally, the [StateBloc.add]() API is sufficient for updating the current value held by a [StateBloc]. Sometimes, however,
-you may be working with complex objects that need to be mutated.
+Generally, the [StateBloc.add](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/add.html) API is sufficient for updating the current value held by a [StateBloc]. Sometimes, however, you may be working with complex objects that need to be mutated.
 
 To keep your state values immutable, you can see if it's possible to use a `copyWith` function to your objects:
 
@@ -141,7 +146,7 @@ userState.add(
 
 Many Flutter data objects like [TextStyle](https://api.flutter.dev/flutter/painting/TextStyle-class.html) already support this pattern.
 
-If you instead need to mutate the current value, you can use the [StateBloc.setValue]() API:
+If you instead need to mutate the current value, you can use the [StateBloc.setValue](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/setValue.html) API:
 
 ```dart
 final user = User(firstName: 'Anakin', lastName: 'Skywalker');
