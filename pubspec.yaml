@@ -1,6 +1,6 @@
 name: restate
 description: A reactive state management libray for Flutter applications with no dependencies and < 200 lines.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/danReynolds/restate
 
 environment:

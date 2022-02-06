@@ -4,10 +4,10 @@
 
 Each Restate [StateBloc](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc-class.html) holds a single state value accessible synchronously, as a [Future](https://dart.dev/codelabs/async-await#what-is-a-future) or as a [Stream](https://dart.dev/tutorials/language/streams) of values.
 
-* [StateBloc.value](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/value.html): Access the state value synchronously.
-* [StateBloc.current](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/current.html): A Future that resolves with the current value or waits for one if no value has been added.
-* [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html): A Stream of updates to the state value.
-* [StateBloc.changes](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/changes.html): A Stream of changes to the state value including the current and previous value.
+* [StateBloc.value](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/value.html) - Returns the current state value synchronously.
+* [StateBloc.current](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/current.html) - Returns a Future that resolves with the current value if it already has a value or otherwise waits for one to be added.
+* [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html): - Returns a Stream of updates to the state value.
+* [StateBloc.changes](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/changes.html): Returns a Stream of changes to the state value including the current and previous value.
 
 ## Reading the current value
 
@@ -158,7 +158,7 @@ userState.setValue((currentUser) {
 });
 ```
 
-The `setValue` API provides the current value held by the `StateBloc`, allowing you to mutate it as necessary, and then re-emits that object on the [StateBloc.stream].
+The `setValue` API provides the current value held by the `StateBloc`, allowing you to mutate it as necessary, and then re-emits that object on the [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html).
 
 ## Give Feedback
 

@@ -1,3 +1,6 @@
+## 0.0.4
+
+More documentation updates.
 ## 0.0.3
 
 Fix documentation.
@@ -7,4 +10,4 @@ Update documentation.
 
 ## 0.0.1
 
-* Initial release
+* Initial release.
