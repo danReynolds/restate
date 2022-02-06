@@ -1,3 +1,6 @@
+## 0.0.5
+
+Small documentation fixes.
 ## 0.0.4
 
 More documentation updates.

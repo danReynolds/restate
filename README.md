@@ -6,8 +6,8 @@ Each Restate [StateBloc](https://pub.dev/documentation/restate/latest/state_bloc
 
 * [StateBloc.value](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/value.html) - Returns the current state value synchronously.
 * [StateBloc.current](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/current.html) - Returns a Future that resolves with the current value if it already has a value or otherwise waits for one to be added.
-* [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html): - Returns a Stream of updates to the state value.
-* [StateBloc.changes](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/changes.html): Returns a Stream of changes to the state value including the current and previous value.
+* [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html) - Returns a Stream of updates to the state value.
+* [StateBloc.changes](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/changes.html) - Returns a Stream of changes to the state value including the current and previous value.
 
 ## Reading the current value
 
@@ -108,7 +108,7 @@ That's it! You can run the [demo](https://github.com/danReynolds/restate/tree/ma
 
 ## Updating a StateBloc value
 
-Generally, the [StateBloc.add](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/add.html) API is sufficient for updating the current value held by a [StateBloc]. Sometimes, however, you may be working with complex objects that need to be mutated.
+Generally, the [StateBloc.add](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/add.html) API is sufficient for updating the current value held by a `StateBloc`. Sometimes, however, you may be working with complex objects that need to be mutated.
 
 To keep your state values immutable, you can see if it's possible to use a `copyWith` function to your objects:
 
@@ -160,6 +160,6 @@ userState.setValue((currentUser) {
 
 The `setValue` API provides the current value held by the `StateBloc`, allowing you to mutate it as necessary, and then re-emits that object on the [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html).
 
-## Give Feedback
+## Feedback Welcome
 
-Let us know if there's a feature or change you would like to see to State Blocs.
+Let us know if there's a feature or changes you would like to see to **Restate** on [GitHub](https://github.com/danReynolds/restate) and happy coding!
