@@ -1,3 +1,3 @@
-library state_blocs;
+library restate;
 
 export './state_bloc.dart';

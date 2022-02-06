@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:state_blocs/state_blocs.dart';
-import 'package:state_blocs/state_change_tuple.dart';
+import 'package:restate/restate.dart';
+import 'package:restate/state_change_tuple.dart';
 
 class TestModel {
   bool test;

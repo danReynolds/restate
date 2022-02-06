@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:state_blocs/state_change_tuple.dart';
-import 'package:state_blocs/stream/extensions/start_with.dart';
+import 'package:restate/state_change_tuple.dart';
+import 'package:restate/stream/extensions/start_with.dart';
 
 /// A [Stream] of values emitted by the [StateBloc] beginning with its current value.
 class StateBlocStream<T> extends Stream<T?> {
@@ -124,6 +124,11 @@ class StateBloc<T> {
   /// The current value of the [StateBloc].
   T? get value {
     return _value;
+  }
+
+  /// Updates the value of the [StateBloc].
+  set value(T? value) {
+    add(value);
   }
 
   /// A [Future] that waits for a value to be added to the [StateBloc]. Completes

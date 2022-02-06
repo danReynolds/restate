@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:state_blocs/stream/transformer.dart';
+import 'package:restate/stream/transformer.dart';
 
 StreamTransformer<T, T> startWithStreamTransformer<T>(T event) {
   return createTransformer(onListen: (controller) => controller.add(event));

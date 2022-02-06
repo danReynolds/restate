@@ -1,5 +1,5 @@
-name: state_blocs
-description: A lightweight state management libray for Flutter applications with no dependencies and < 200 lines.
+name: restate
+description: A reactive state management libray for Flutter applications with no dependencies and < 200 lines.
 version: 0.0.1
 homepage: https://github.com/danReynolds/state_blocs
 

@@ -1,13 +1,13 @@
-# State Blocs
+# Restate
 
-**StateBlocs** is a lightweight state management libray for Flutter applications with no dependencies and < 200 lines.
+**Restate** is a reactive state management libray for Flutter applications with no dependencies and < 200 lines.
 
-Each [StateBloc]() holds a single state value accessible synchronously using [StateBloc.value](), as a [Future](https://dart.dev/codelabs/async-await#what-is-a-future) using [StateBloc.current]() or as a [Stream](https://dart.dev/tutorials/language/streams) using [StateBloc.stream]() and [StateBloc.changes]() for a stream of the current and previous value.
+Each Restate [StateBloc]() holds a single state value accessible synchronously using [StateBloc.value](), as a [Future](https://dart.dev/codelabs/async-await#what-is-a-future) using [StateBloc.current]() or as a [Stream](https://dart.dev/tutorials/language/streams) using [StateBloc.stream]() and [StateBloc.changes]() for a stream of the current and previous value.
 
 ## Reading the current value
 
 ```dart
-import 'package:state_blocs/state_blocs.dart';
+import 'package:restate/restate.dart';
 
 final counterState = StateBloc<int>(0);
 print(counterState.value); // 0
@@ -18,7 +18,7 @@ print(counterState.value); // 1
 ## Listening to a Stream of values
 
 ```dart
-import 'package:state_blocs/state_blocs.dart';
+import 'package:restate/restate.dart';
 
 final counterState = StateBloc<int>(0);
 
@@ -36,7 +36,7 @@ counterState.add(2);
 ## Listening to a Stream of changes
 
 ```dart
-import 'package:state_blocs/state_blocs.dart';
+import 'package:restate/restate.dart';
 
 final counterState = StateBloc<int>(0);
 
@@ -54,7 +54,7 @@ counterState.add(2);
 ## Waiting for the current value
 
 ```dart
-import 'package:state_blocs/state_blocs.dart';
+import 'package:restate/restate.dart';
 
 final counterState = StateBloc<int>();
 
@@ -62,9 +62,9 @@ counterState.current.then((value) => print(value)); // 1
 counterState.add(1);
 ```
 
-## Building widgets with StateBlocs
+## Accessing State in Widgets
 
-Using `StateBlocs` to manage the state of your Flutter application and get live updates is easy as creating a [StateBloc]()
+Accesing and listening for updates to your state is as simple as creating a [StateBloc]()
 and then using a [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) to rebuild your widget when data changes:
 
 ```dart
@@ -105,7 +105,7 @@ That's it! You can run the [demo]() to see a more in-depth working example.
 Generally, the [StateBloc.add]() API is sufficient for updating the current value held by a [StateBloc]. Sometimes, however,
 you may be working with complex objects that need to be mutated.
 
-To keep your state values immutable, you can see if it's possible to use a `copyWith` function to your object so that each value emitted by the `StateBloc` is unique:
+To keep your state values immutable, you can see if it's possible to use a `copyWith` function to your objects:
 
 ```dart
 class User {
@@ -141,7 +141,7 @@ userState.add(
 
 Many Flutter data objects like [TextStyle](https://api.flutter.dev/flutter/painting/TextStyle-class.html) already support this pattern.
 
-If you instead are looking to mutate the current value, you can use the [StateBloc.setValue]() API:
+If you instead need to mutate the current value, you can use the [StateBloc.setValue]() API:
 
 ```dart
 final user = User(firstName: 'Anakin', lastName: 'Skywalker');
@@ -153,7 +153,7 @@ userState.setValue((currentUser) {
 });
 ```
 
-The `setValue` API provides the current value held by the `StateBloc`, allowing you to mutate it as necessary, and then will re-emit that object on the [StateBloc.stream].
+The `setValue` API provides the current value held by the `StateBloc`, allowing you to mutate it as necessary, and then re-emits that object on the [StateBloc.stream].
 
 ## Give Feedback
 
