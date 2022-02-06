@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:state_blocs/state_change_tuple.dart';
 import 'package:state_blocs/stream/extensions/start_with.dart';
 
+/// A [Stream] of values emitted by the [StateBloc] beginning with its current value.
 class StateBlocStream<T> extends Stream<T?> {
   final Stream<StateChangeTuple<T?>> Function() factory;
 
@@ -25,6 +26,8 @@ class StateBlocStream<T> extends Stream<T?> {
   }
 }
 
+/// A [Stream] of [StateBloc] value changes beginnign with its current and previous
+/// value.
 class StateBlocChangeStream<T> extends Stream<StateChangeTuple<T?>> {
   final Stream<StateChangeTuple<T?>> Function() factory;
 
@@ -48,9 +51,10 @@ class StateBlocChangeStream<T> extends Stream<StateChangeTuple<T?>> {
   }
 }
 
-/// A state class that holds a current value accessible synchronously
+/// A class that holds a single state value accessible synchronously
 /// using [StateBloc.value], as a [Future] using [StateBloc.current] or as a
-/// stream using [StateBloc.stream].
+/// stream using [StateBloc.stream] and [StateBloc.changes] for a stream of the
+/// current and previous value.
 class StateBloc<T> {
   final _controller = StreamController<StateChangeTuple<T?>>.broadcast();
   late StateBlocStream<T> _stateStream;
@@ -111,8 +115,8 @@ class StateBloc<T> {
     return _stateChangeStream;
   }
 
-  /// Returns a stream that emits all of the updates to the [StateBloc], starting
-  /// with the current value.
+  /// Returns a stream that emits all of the updates to the value held by the [StateBloc],
+  /// starting with the current value.
   Stream<T?> get stream {
     return _stateStream;
   }

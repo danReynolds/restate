@@ -1,7 +1,7 @@
 name: state_blocs
-description: A new Flutter package project.
+description: A lightweight state management libray for Flutter applications with no dependencies and < 200 lines.
 version: 0.0.1
-homepage:
+homepage: https://github.com/danReynolds/state_blocs
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
