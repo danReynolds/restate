@@ -113,7 +113,7 @@ void main() {
     test('returns the current value of the StateBloc', () {
       expect(stateBloc.value, null);
       stateBloc.add(1);
-      expectLater(stateBloc.stream, emits(1));
+      expect(stateBloc.value, 1);
     });
   });
 
@@ -148,6 +148,27 @@ void main() {
       'returns a future that resolves once a value has been added to the StateBloc',
       () {
         expect(stateBloc.current, completion(1));
+        stateBloc.add(1);
+      },
+    );
+  });
+
+  group('next', () {
+    late StateBloc<int> stateBloc;
+
+    setUp(() {
+      stateBloc = StateBloc();
+    });
+
+    tearDown(() {
+      stateBloc.dispose();
+    });
+
+    test(
+      'returns a future that resolves when the next value is added to the stream',
+      () {
+        stateBloc.add(0);
+        expect(stateBloc.next, completion(1));
         stateBloc.add(1);
       },
     );
@@ -188,6 +209,25 @@ void main() {
         stateBloc.changes,
         emitsInOrder([
           StateChangeTupleMatcher(StateChangeTuple(null, 1)),
+          StateChangeTupleMatcher(StateChangeTuple(1, 2)),
+          StateChangeTupleMatcher(StateChangeTuple(2, 3)),
+        ]),
+      );
+      stateBloc.add(1);
+      stateBloc.add(2);
+      stateBloc.add(3);
+    });
+
+    test(
+        'emits all of the provided state change tuples beginning with the initial value',
+        () {
+      stateBloc = StateBloc(0);
+
+      expectLater(
+        stateBloc.changes,
+        emitsInOrder([
+          StateChangeTupleMatcher(StateChangeTuple(null, 0)),
+          StateChangeTupleMatcher(StateChangeTuple(0, 1)),
           StateChangeTupleMatcher(StateChangeTuple(1, 2)),
           StateChangeTupleMatcher(StateChangeTuple(2, 3)),
         ]),

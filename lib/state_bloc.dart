@@ -1,31 +1,84 @@
 import 'dart:async';
 import 'package:state_blocs/state_change_tuple.dart';
+import 'package:state_blocs/stream/extensions/start_with.dart';
+
+class StateBlocStream<T> extends Stream<T?> {
+  final Stream<StateChangeTuple<T?>> Function() factory;
+
+  StateBlocStream._({
+    required this.factory,
+  });
+
+  @override
+  StreamSubscription<T?> listen(
+    void Function(T? value)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    return factory().map((val) => val.current).listen(
+          onData,
+          onError: onError,
+          onDone: onDone,
+          cancelOnError: cancelOnError,
+        );
+  }
+}
+
+class StateBlocChangeStream<T> extends Stream<StateChangeTuple<T?>> {
+  final Stream<StateChangeTuple<T?>> Function() factory;
+
+  StateBlocChangeStream._({
+    required this.factory,
+  });
+
+  @override
+  StreamSubscription<StateChangeTuple<T?>> listen(
+    void Function(StateChangeTuple<T?> value)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    return factory().listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
+  }
+}
 
 /// A state class that holds a current value accessible synchronously
-/// using [StateBloc.value], as a [Future] using [StateBloc.current] or as a stream using [StateBloc.stream].
+/// using [StateBloc.value], as a [Future] using [StateBloc.current] or as a
+/// stream using [StateBloc.stream].
 class StateBloc<T> {
-  final _inputController = StreamController<StateChangeTuple<T?>>();
-  final _outputController = StreamController<StateChangeTuple<T?>>.broadcast();
+  final _controller = StreamController<StateChangeTuple<T?>>.broadcast();
+  late StateBlocStream<T> _stateStream;
+  late StateBlocChangeStream<T> _stateChangeStream;
 
   T? _value;
   T? _prevValue;
-  bool _hasEvent = false;
+  bool _hasEmitted = false;
 
   StateBloc([T? initialValue]) {
-    _inputController.stream.listen((newValue) {
-      if (!_hasEvent) {
-        _hasEvent = true;
-      }
-      _outputController.add(newValue);
-    });
-
-    // If the StateBloc is instantiated with an initialValue then it has a value to emit
-    // to subscribers.
-    _hasEvent = initialValue != null;
+    _stateStream = StateBlocStream<T>._(
+      factory: _streamFactory,
+    );
+    _stateChangeStream = StateBlocChangeStream<T>._(
+      factory: _streamFactory,
+    );
 
     if (initialValue != null) {
       add(initialValue);
     }
+  }
+
+  Stream<StateChangeTuple<T?>> _streamFactory() {
+    if (_hasEmitted) {
+      return _controller.stream
+          .startWith(StateChangeTuple<T?>(_prevValue, _value));
+    }
+    return _controller.stream;
   }
 
   _updateValue(T? value) {
@@ -38,44 +91,30 @@ class StateBloc<T> {
     close();
   }
 
-  /// Closes the internal stream controller.
+  /// Closes the [StreamController] for the [StateBloc]. No further items will be emitted
+  /// by the [StateBloc] Stream or Future interfaces.
   close() {
-    _inputController.close();
-    _outputController.close();
+    _controller.close();
   }
 
   /// Returns whether the [StateBloc]'s stream controller is able to receive new events
   /// or has been closed.
   bool get isClosed {
-    return _inputController.isClosed;
+    return _controller.isClosed;
   }
 
-  /// Returns a stream that emits all of changes to the value of the [StateBloc]
-  /// as a [StateChangeTuple] containing the current and previous value. When the
-  /// [StateBloc] receives its first value, the changes stream will emit immediately
-  /// with a previous value of [initialValue] or null if no [initialValue] was provided.
+  /// Returns a stream that emits all of changes to the value of the [StateBloc] as a
+  /// [StateChangeTuple] containing the [StateChangeTuple.current] and [StateChangeTuple.previous] value.
+  /// If the [StateBloc] is instantiated with an [initialValue], the [StateBloc.changes] stream will first emit
+  /// a tuple of [StateChangeTuple.current] equal to the initialValue and a [StateChangeTuple.previous] of null.
   Stream<StateChangeTuple<T?>> get changes {
-    StreamController<StateChangeTuple<T?>>? _downStreamController;
-    _downStreamController = StreamController<StateChangeTuple<T?>>(
-      onListen: () {
-        if (_hasEvent) {
-          _downStreamController!.add(StateChangeTuple(_prevValue, _value));
-        }
-        _outputController.stream.listen((data) {
-          _downStreamController!.add(data);
-        }, onDone: () {
-          _downStreamController!.close();
-        });
-      },
-    );
-
-    return _downStreamController.stream;
+    return _stateChangeStream;
   }
 
   /// Returns a stream that emits all of the updates to the [StateBloc], starting
   /// with the current value.
   Stream<T?> get stream {
-    return changes.map((stateChange) => stateChange.current);
+    return _stateStream;
   }
 
   /// The current value of the [StateBloc].
@@ -83,21 +122,24 @@ class StateBloc<T> {
     return _value;
   }
 
-  /// A Future that waits for a value to be emitted to the [StateBloc]. Completes
+  /// A [Future] that waits for a value to be added to the [StateBloc]. Completes
   /// with the current value if the [StateBloc] already has a value.
   Future<T?> get current {
     return stream.first;
   }
 
-  /// A Future that waits for the next value emitted to the [StateBloc].
+  /// A Future that waits for the next value to be added to the [StateBloc].
   Future<T?> get next {
-    return _outputController.stream.first.then((data) => data.current);
+    return _controller.stream.first.then((data) => data.current);
   }
 
   /// Updates the current value of the [StateBloc] to the provided value.
   void add(T? value) {
     _updateValue(value);
-    _inputController.add(StateChangeTuple(_prevValue, _value));
+    if (!_hasEmitted) {
+      _hasEmitted = true;
+    }
+    _controller.add(StateChangeTuple(_prevValue, _value));
   }
 
   /// Executes the provided [updateFn] and then re-emits the updated value on the stream.
