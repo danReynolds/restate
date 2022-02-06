@@ -109,8 +109,6 @@ class StateBloc<T> {
 
   /// Returns a stream that emits all of changes to the value of the [StateBloc] as a
   /// [StateChangeTuple] containing the [StateChangeTuple.current] and [StateChangeTuple.previous] value.
-  /// If the [StateBloc] is instantiated with an [initialValue], the [StateBloc.changes] stream will first emit
-  /// a tuple of [StateChangeTuple.current] equal to the initialValue and a [StateChangeTuple.previous] of null.
   Stream<StateChangeTuple<T?>> get changes {
     return _stateChangeStream;
   }

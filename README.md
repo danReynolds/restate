@@ -6,8 +6,8 @@ Each Restate [StateBloc](https://pub.dev/documentation/restate/latest/state_bloc
 
 * [StateBloc.value](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/value.html): Access the state value synchronously.
 * [StateBloc.current](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/current.html): A Future that resolves with the current value or waits for one if no value has been added.
-* [StateBloc.stream]: A Stream of updates to the state value.
-* [StateBloc.changes]: A Stream of changes to the state value including the current and previous value.
+* [StateBloc.stream](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/stream.html): A Stream of updates to the state value.
+* [StateBloc.changes](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/changes.html): A Stream of changes to the state value including the current and previous value.
 
 ## Reading the current value
 
