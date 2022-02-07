@@ -1,6 +1,6 @@
 # Restate
 
-**Restate** is a reactive state management libray for Flutter applications with no dependencies and < 200 lines.
+**Restate** is a reactive state management library for Flutter applications with no dependencies and < 200 lines.
 
 Each Restate [StateBloc](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc-class.html) holds a single state value accessible synchronously, as a [Future](https://dart.dev/codelabs/async-await#what-is-a-future) or as a [Stream](https://dart.dev/tutorials/language/streams) of values.
 
