@@ -110,7 +110,7 @@ That's it! You can run the [demo](https://github.com/danReynolds/restate/tree/ma
 
 Generally, the [StateBloc.add](https://pub.dev/documentation/restate/latest/state_bloc/StateBloc/add.html) API is sufficient for updating the current value held by a `StateBloc`. Sometimes, however, you may be working with complex objects that need to be mutated.
 
-To keep your state values immutable, you can see if it's possible to use a `copyWith` function to your objects:
+To keep your state values immutable, you can see if it's possible to use a `copyWith` function to return new objects:
 
 ```dart
 class User {

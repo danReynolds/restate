@@ -157,7 +157,7 @@ class StateBloc<T> {
   /// ```
   /// setValue will re-emit the user object on the stream, allowing all listeners
   /// to receive the updated value.
-  void setValue(T? Function(T? currentValue) updateFn) {
+  void setValue(void Function(T? currentValue) updateFn) {
     updateFn(_value);
     add(_value);
   }
