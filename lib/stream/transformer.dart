@@ -1,9 +1,9 @@
 import 'dart:async';
 
-// StreamTransformer implementation based on Dart docs:
-// https://api.flutter.dev/flutter/dart-async/StreamTransformer/StreamTransformer.html.
-// Used for transforming an existing input stream to manipulate the data it emits on initially
-// listening to the stream and subseqent data events.
+/// StreamTransformer implementation based on Dart docs:
+/// https://api.flutter.dev/flutter/dart-async/StreamTransformer/StreamTransformer.html.
+/// Used for transforming an existing input stream to manipulate the data it emits on initially
+/// listening to the stream and subseqent data events.
 StreamTransformer<T, T> createTransformer<T>({
   void Function(StreamController<T> controller)? onListen,
   void Function(StreamController<T> controller)? onData,
@@ -38,8 +38,9 @@ StreamTransformer<T, T> createTransformer<T>({
           ..onResume = subscription.resume
           ..onCancel = subscription.cancel;
       };
-      // Return a new [StreamSubscription] by listening to the controller's
-      // stream.
+
+      /// Return a new [StreamSubscription] by listening to the controller's
+      /// stream.
       return controller.stream.listen(null);
     },
   );
