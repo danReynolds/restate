@@ -45,7 +45,7 @@ import 'package:restate/restate.dart';
 
 final counterState = StateBloc<int>(0);
 
-counterState.stream.listen((value) {
+counterState.changes.listen((value) {
   print('${value.previous}->${value.current}');
   // null->0
   // 0->1

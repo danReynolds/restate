@@ -1,3 +1,7 @@
+## 0.0.8
+
+Docs update.
+
 ## 0.0.7
 
 Docs fix.
