@@ -1,3 +1,7 @@
+## 0.0.7
+
+Docs fix.
+
 ## 0.0.6
 
 Small fix to `setValue` API.
