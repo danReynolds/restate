@@ -134,7 +134,7 @@ class User {
 }
 
 final user = User(firstName: 'Anakin', lastName: 'Skywalker');
-final userState = UserStateBloc<User>();
+final userState = UserStateBloc<User>(user);
 
 userState.add(
   userState.value.copyWith(
@@ -150,7 +150,7 @@ If you instead need to mutate the current value, you can use the [StateBloc.setV
 
 ```dart
 final user = User(firstName: 'Anakin', lastName: 'Skywalker');
-final userState = UserStateBloc<User>();
+final userState = UserStateBloc<User>(user);
 
 userState.setValue((currentUser) {
   currentUser.firstName = 'Darth';
