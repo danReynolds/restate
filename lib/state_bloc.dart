@@ -26,8 +26,8 @@ class StateBlocStream<T> extends Stream<T?> {
   }
 }
 
-/// A [Stream] of [StateBloc] value changes beginnign with its current and previous
-/// value.
+/// A [Stream] of [StateBloc] value changes consisting of its current and
+/// previous value.
 class StateBlocChangeStream<T> extends Stream<StateChangeTuple<T?>> {
   final Stream<StateChangeTuple<T?>> Function() factory;
 
@@ -135,7 +135,7 @@ class StateBloc<T> {
     return stream.first;
   }
 
-  /// A Future that waits for the next value to be added to the [StateBloc].
+  /// A [Future] that waits for the next value to be added to the [StateBloc].
   Future<T?> get next {
     return _controller.stream.first.then((data) => data.current);
   }

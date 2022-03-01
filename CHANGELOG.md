@@ -1,3 +1,7 @@
+## 0.0.9
+
+Remove Flutter dependency.
+
 ## 0.0.8
 
 Docs update.
