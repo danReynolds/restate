@@ -185,7 +185,28 @@ void main() {
     });
 
     test('emits all of the provided values', () {
-      expectLater(stateBloc.stream, emitsInOrder([1, 2, 3]));
+      expectLater(stateBloc.stream, emitsInOrder([null, 1, 2, 3]));
+      stateBloc.add(null);
+      stateBloc.add(1);
+      stateBloc.add(2);
+      stateBloc.add(3);
+    });
+  });
+
+  group('nonNullStream', () {
+    late StateBloc<int> stateBloc;
+
+    setUp(() {
+      stateBloc = StateBloc();
+    });
+
+    tearDown(() {
+      stateBloc.dispose();
+    });
+
+    test('emits all of the provided non-null values', () {
+      expectLater(stateBloc.nonNullStream, emitsInOrder([1, 2, 3]));
+      stateBloc.add(null);
       stateBloc.add(1);
       stateBloc.add(2);
       stateBloc.add(3);

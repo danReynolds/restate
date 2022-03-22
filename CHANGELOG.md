@@ -1,3 +1,7 @@
+## 0.2.0
+
+Add support for a non-null value stream.
+
 ## 0.1.0
 
 Docs fix.

@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:restate/state_change_tuple.dart';
 import 'package:restate/stream/extensions/start_with.dart';
+import 'package:restate/stream/extensions/where_type.dart';
 
 /// A [Stream] of values emitted by the [StateBloc] beginning with its current value.
 class StateBlocStream<T> extends Stream<T?> {
@@ -58,6 +60,7 @@ class StateBlocChangeStream<T> extends Stream<StateChangeTuple<T?>> {
 class StateBloc<T> {
   final _controller = StreamController<StateChangeTuple<T?>>.broadcast();
   late StateBlocStream<T> _stateStream;
+  late Stream<T> _nonNullStream;
   late StateBlocChangeStream<T> _stateChangeStream;
 
   T? _value;
@@ -68,6 +71,7 @@ class StateBloc<T> {
     _stateStream = StateBlocStream<T>._(
       factory: _streamFactory,
     );
+    _nonNullStream = _stateStream.whereType<T>();
     _stateChangeStream = StateBlocChangeStream<T>._(
       factory: _streamFactory,
     );
@@ -117,6 +121,12 @@ class StateBloc<T> {
   /// starting with the current value.
   Stream<T?> get stream {
     return _stateStream;
+  }
+
+  /// Returns a stream that emits all of the non-null updates to the value held by the [StateBloc],
+  /// starting with the current value.
+  Stream<T> get nonNullStream {
+    return _nonNullStream;
   }
 
   /// The current value of the [StateBloc].

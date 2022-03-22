@@ -4,11 +4,11 @@ import 'dart:async';
 /// https://api.flutter.dev/flutter/dart-async/StreamTransformer/StreamTransformer.html.
 /// Used for transforming an existing input stream to manipulate the data it emits on initially
 /// listening to the stream and subseqent data events.
-StreamTransformer<T, T> createTransformer<T>({
+StreamTransformer<S, T> createTransformer<S, T>({
   void Function(StreamController<T> controller)? onListen,
-  void Function(StreamController<T> controller)? onData,
+  void Function(StreamController<T> controller, S data)? onData,
 }) {
-  return StreamTransformer<T, T>(
+  return StreamTransformer<S, T>(
     (Stream input, bool cancelOnError) {
       // A synchronous stream controller is intended for cases where
       // an already asynchronous event triggers an event on a stream.
@@ -23,7 +23,7 @@ StreamTransformer<T, T> createTransformer<T>({
         var subscription = input.listen(
           (data) {
             if (onData != null) {
-              onData(data);
+              onData(controller, data);
             } else {
               controller.add(data);
             }
