@@ -134,6 +134,11 @@ class StateBloc<T> {
     return _value;
   }
 
+  /// The previous value of the [StateBloc].
+  T? get previousValue {
+    return _prevValue;
+  }
+
   /// Updates the value of the [StateBloc].
   set value(T? value) {
     add(value);

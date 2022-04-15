@@ -116,6 +116,25 @@ void main() {
     });
   });
 
+  group('previousValue', () {
+    late StateBloc<int> stateBloc;
+
+    setUp(() {
+      stateBloc = StateBloc();
+    });
+
+    tearDown(() {
+      stateBloc.dispose();
+    });
+
+    test('returns the previous value of the StateBloc', () {
+      expect(stateBloc.value, null);
+      stateBloc.add(1);
+      stateBloc.add(2);
+      expect(stateBloc.previousValue, 1);
+    });
+  });
+
   group('current', () {
     late StateBloc<int> stateBloc;
 

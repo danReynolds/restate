@@ -1,3 +1,7 @@
+## 0.3.0
+
+Expose the previous value.
+
 ## 0.2.0
 
 Add support for a non-null value stream.
