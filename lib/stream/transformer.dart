@@ -3,7 +3,7 @@ import 'dart:async';
 /// StreamTransformer implementation based on Dart docs:
 /// https://api.flutter.dev/flutter/dart-async/StreamTransformer/StreamTransformer.html.
 /// Used for transforming an existing input stream to manipulate the data it emits on initially
-/// listening to the stream and subseqent data events.
+/// listening to the stream and subsequent data events.
 StreamTransformer<S, T> createTransformer<S, T>({
   void Function(StreamController<T> controller)? onListen,
   void Function(StreamController<T> controller, S data)? onData,
